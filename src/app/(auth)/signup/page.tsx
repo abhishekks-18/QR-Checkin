@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { signUp, getCurrentUser } from '@/lib/auth';
-import Cookies from 'js-cookie';
 
 /**
  * Signup page component
@@ -66,7 +65,7 @@ export default function SignupPage() {
 
     try {
       // Attempt to create a new user account
-      const { data, error } = await signUp(email, password, fullName);
+      const { error } = await signUp(email, password, fullName);
 
       if (error) {
         throw new Error(error.message || 'Failed to create account');
@@ -74,8 +73,8 @@ export default function SignupPage() {
 
       // Redirect to login page on successful signup
       router.push('/login?registration=success');
-    } catch (err: any) {
-      setError(err.message || 'An error occurred during registration');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred during registration');
     } finally {
       setIsLoading(false);
     }

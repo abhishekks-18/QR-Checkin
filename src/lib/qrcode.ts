@@ -53,11 +53,11 @@ export async function generateEventQRCode(
       qrCodeDataURL,
       metadata
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error generating QR code:', error);
     return {
       success: false,
-      error: error.message || 'Failed to generate QR code'
+      error: error instanceof Error ? error.message : 'Failed to generate QR code'
     };
   }
 }
@@ -77,11 +77,11 @@ export function decodeQRData(encodedData: string) {
       success: true,
       data: decodedData
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error decoding QR data:', error);
     return {
       success: false,
-      error: error.message || 'Invalid QR code data format'
+      error: error instanceof Error ? error.message : 'Invalid QR code data format'
     };
   }
 }
@@ -91,7 +91,7 @@ export function decodeQRData(encodedData: string) {
  * @param data Decoded QR data
  * @returns Validation result
  */
-export function validateQRData(data: any) {
+export function validateQRData(data: Record<string, unknown>) {
   try {
     // Check for required fields
     const requiredFields = ['name', 'email', 'event', 'eventId'];
@@ -109,10 +109,10 @@ export function validateQRData(data: any) {
       success: true,
       data
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      error: error.message || 'Invalid QR code data'
+      error: error instanceof Error ? error.message : 'Invalid QR code data'
     };
   }
 }
@@ -136,7 +136,7 @@ export async function generateQRCodeBuffer(qrData: string): Promise<Buffer> {
         light: '#ffffff'
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error generating QR code buffer:', error);
     // Return an empty 1x1 transparent PNG as fallback
     return Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64');
@@ -164,7 +164,7 @@ export async function generateFallbackQRCode(qrData: string): Promise<string> {
         quality: 1.0
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error generating fallback QR code:', error);
     // Return a placeholder image if all else fails
     return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';

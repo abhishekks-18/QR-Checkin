@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, signOut, getUserProfile, type UserProfile } from '@/lib/auth';
+import { getCurrentUser, signOut, type UserProfile } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { getAllEvents, type Event } from '@/lib/events';

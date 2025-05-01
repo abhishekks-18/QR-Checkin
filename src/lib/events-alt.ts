@@ -91,12 +91,9 @@ export async function createEventAlt(eventData: EventParams) {
 
     console.log('Event created successfully (alternative):', data[0]);
     return { data: data[0] as Event, error: null };
-  } catch (err: any) {
-    console.error('Exception creating event (alternative):', err);
-    return { 
-      data: null, 
-      error: { message: `An error occurred: ${err.message || 'Unknown error'}` } 
-    };
+  } catch (error: unknown) {
+    console.error('Error creating event (alt):', error);
+    return { data: null, error: error instanceof Error ? error.message : 'Failed to create event' };
   }
 }
 
@@ -117,11 +114,8 @@ export async function getAllEventsAlt() {
     }
 
     return { data: data as Event[], error: null };
-  } catch (err: any) {
-    console.error('Exception fetching events (alternative):', err);
-    return { 
-      data: null, 
-      error: { message: `Error fetching events: ${err.message || 'Unknown error'}` } 
-    };
+  } catch (error: unknown) {
+    console.error('Error getting all events (alt):', error);
+    return { data: null, error: error instanceof Error ? error.message : 'Failed to fetch events' };
   }
 } 

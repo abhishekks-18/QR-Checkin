@@ -57,7 +57,7 @@ export async function GET(
           qrData = data.qrdata;
           break; // Found the registration, exit loop
         }
-      } catch (e) {
+      } catch (_) {
         // Skip any errors (table might not exist or other issues)
         continue;
       }
@@ -86,8 +86,9 @@ export async function GET(
         'Cache-Control': 'public, max-age=86400', // Cache for 1 day
       }
     });
-  } catch (error: any) {
-    console.error('Error generating registration QR code:', error);
-    return new NextResponse('Error generating QR code', { status: 500 });
+  } catch (_) {
+    return NextResponse.json({
+      error: 'Error scanning registration',
+    }, { status: 500 });
   }
 } 

@@ -107,12 +107,9 @@ export async function createEvent(eventData: EventParams) {
 
     console.log('Event created successfully:', data[0]);
     return { data: data[0] as Event, error: null };
-  } catch (err: any) {
-    console.error('Exception creating event:', err);
-    return { 
-      data: null, 
-      error: { message: `An error occurred while creating the event: ${err.message || 'Unknown error'}` } 
-    };
+  } catch (error: unknown) {
+    console.error('Error creating event:', error);
+    return { data: null, error: error instanceof Error ? error.message : 'Failed to create event' };
   }
 }
 
@@ -133,12 +130,9 @@ export async function getAllEvents() {
     }
 
     return { data: data as Event[], error: null };
-  } catch (err: any) {
-    console.error('Exception fetching events:', err);
-    return { 
-      data: null, 
-      error: { message: `An error occurred while fetching events: ${err.message || 'Unknown error'}` } 
-    };
+  } catch (error: unknown) {
+    console.error('Error getting all events:', error);
+    return { data: null, error: error instanceof Error ? error.message : 'Failed to fetch events' };
   }
 }
 
@@ -161,10 +155,8 @@ export async function getEventById(eventId: string) {
 
     return { data: data as Event, error: null };
   } catch (err) {
-    return { 
-      data: null, 
-      error: { message: 'An error occurred while fetching the event' } 
-    };
+    console.error('Exception in getEventById:', err);
+    return { data: null, error: { message: 'Failed to fetch event details' } };
   }
 }
 
@@ -188,10 +180,8 @@ export async function updateEvent(eventId: string, eventData: Partial<EventParam
 
     return { data: data[0] as Event, error: null };
   } catch (err) {
-    return { 
-      data: null, 
-      error: { message: 'An error occurred while updating the event' } 
-    };
+    console.error('Exception updating event:', err);
+    return { success: false, error: { message: 'Failed to update event' } };
   }
 }
 
@@ -213,10 +203,8 @@ export async function deleteEvent(eventId: string) {
 
     return { success: true, error: null };
   } catch (err) {
-    return { 
-      success: false, 
-      error: { message: 'An error occurred while deleting the event' } 
-    };
+    console.error('Exception deleting event:', err);
+    return { success: false, error: { message: 'Failed to delete event' } };
   }
 }
 

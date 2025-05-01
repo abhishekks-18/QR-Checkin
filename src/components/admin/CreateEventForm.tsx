@@ -53,7 +53,7 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
     if (error) {
       setError(null);
     }
-  }, [formData]);
+  }, [formData, error]);
   
   /**
    * Format today's date as YYYY-MM-DD for date input
@@ -124,11 +124,15 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
       
       // Call success handler
       onSuccess();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error creating event:', err);
       
       // Show user-friendly error message
-      setError(err.message || 'An error occurred while creating the event. Please try again or contact support if the problem persists.');
+      setError(
+        err instanceof Error 
+          ? err.message 
+          : 'An error occurred while creating the event. Please try again or contact support if the problem persists.'
+      );
     } finally {
       setIsLoading(false);
     }

@@ -138,10 +138,11 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Registration successful. Check your email for confirmation.'
     } as RegistrationResponse);
-  } catch (error: any) {
-    console.error('Error in registration process:', error);
+  } catch (error: unknown) {
+    console.error('Error in registration API:', error);
+    
     return NextResponse.json(
-      { error: `An unexpected error occurred: ${error.message}` } as RegistrationResponse,
+      { error: error instanceof Error ? error.message : 'An error occurred during registration' } as RegistrationResponse,
       { status: 500 }
     );
   }

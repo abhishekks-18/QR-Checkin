@@ -5,7 +5,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import QRCode from 'qrcode';
-import { QRCodeData } from '@/lib/types';
 
 /**
  * QR code generation response interface
@@ -13,7 +12,7 @@ import { QRCodeData } from '@/lib/types';
 interface QRCodeResponse {
   success: boolean;
   qrCodeDataURL?: string;
-  decodedData?: any;
+  decodedData?: Record<string, unknown>;
   error?: string;
 }
 
@@ -40,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     // Handle different data types
     let qrData: string;
-    let decodedData: any = null;
+    let decodedData: Record<string, unknown> | string | null = null;
     
     if (isBase64) {
       // If it's already base64 encoded, use it directly
@@ -86,12 +85,12 @@ export async function POST(request: NextRequest) {
       qrCodeDataURL,
       decodedData
     } as QRCodeResponse);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error generating QR code:', error);
     return NextResponse.json(
       { 
         success: false,
-        error: `An unexpected error occurred: ${error.message}` 
+        error: `An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}` 
       } as QRCodeResponse,
       { status: 500 }
     );
@@ -123,16 +122,16 @@ export async function GET(request: NextRequest) {
         success: true,
         data: decodedData
       });
-    } catch (error) {
+    } catch (_) {
       return NextResponse.json(
         { success: false, error: 'Invalid encoded data format' },
         { status: 400 }
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error decoding QR data:', error);
     return NextResponse.json(
-      { success: false, error: `An unexpected error occurred: ${error.message}` },
+      { success: false, error: `An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}` },
       { status: 500 }
     );
   }

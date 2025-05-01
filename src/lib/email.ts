@@ -15,7 +15,16 @@ interface EmailData {
   html: string;
   from?: string;
   text?: string;
-  attachments?: any[];
+  attachments?: Array<{
+    filename: string;
+    content?: string;
+    path?: string;
+    contentType?: string;
+    cid?: string;
+    encoding?: string;
+    headers?: Record<string, string>;
+    raw?: string;
+  }>;
 }
 
 /**
@@ -62,11 +71,11 @@ export async function sendEmail(emailData: EmailData): Promise<EmailResponse> {
       success: true,
       messageId: info.messageId
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error sending email:', error);
     return { 
       success: false, 
-      error: error.message || 'Failed to send email'
+      error: error instanceof Error ? error.message : 'Failed to send email'
     };
   }
 }
@@ -195,11 +204,11 @@ export async function sendQRCodeEmail(
       subject,
       html: generateEmailTemplate(emailContent)
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error sending QR code email:', error);
     return {
       success: false,
-      error: error.message || 'Failed to send QR code email'
+      error: error instanceof Error ? error.message : 'Failed to send QR code email'
     };
   }
 }
@@ -312,11 +321,83 @@ export async function sendQRCodeEmailWithUrl(
       subject,
       html: generateEmailTemplate(emailContent)
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error sending QR code email with URL:', error);
     return {
       success: false,
-      error: error.message || 'Failed to send QR code email'
+      error: error instanceof Error ? error.message : 'Failed to send QR code email'
+    };
+  }
+}
+
+/**
+ * Send a welcome email to a new user
+ * @param to Recipient email
+ * @param name Recipient name
+ * @returns Response with success status and error if any
+ */
+export async function sendWelcomeEmail(to: string, name: string): Promise<EmailResponse> {
+  try {
+    // Set up email transporter
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_SERVER_HOST,
+      port: Number(process.env.EMAIL_SERVER_PORT),
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.EMAIL_SERVER_USER,
+        pass: process.env.EMAIL_SERVER_PASSWORD,
+      },
+    });
+
+    // Set the from address if not provided
+    const from = process.env.EMAIL_FROM;
+
+    // Create welcome email content
+    const emailContent = `
+      <div class="header">
+        <h1>Welcome to Our Platform!</h1>
+      </div>
+      
+      <p>Hello ${name},</p>
+      
+      <p>Thank you for joining our platform. We're excited to have you on board!</p>
+      
+      <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+        <h2 style="margin-top: 0;">What to Expect</h2>
+        <p>Here's a quick overview of what you can expect from our platform:</p>
+        <ul>
+          <li>Access to a wide range of resources and tools</li>
+          <li>Opportunities to connect with other members</li>
+          <li>Regular updates and notifications</li>
+        </ul>
+      </div>
+      
+      <p>If you have any questions or need assistance, feel free to reach out to us.</p>
+      
+      <p>Best regards,</p>
+      
+      <p>The Team</p>
+    `;
+
+    // Send the email
+    const info = await transporter.sendMail({
+      from,
+      to,
+      subject: 'Welcome to Our Platform!',
+      text: emailContent,
+      html: generateEmailTemplate(emailContent)
+    });
+
+    console.log('Welcome email sent successfully:', info.messageId);
+    return { 
+      success: true,
+      messageId: info.messageId
+    };
+  } catch (error: unknown) {
+    console.error('Error sending welcome email:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to send welcome email'
     };
   }
 } 

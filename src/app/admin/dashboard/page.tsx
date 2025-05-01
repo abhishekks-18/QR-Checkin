@@ -118,9 +118,9 @@ export default function AdminDashboardPage() {
         }
         
         await loadEvents();
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Delete error:', err);
-        setErrorMessage(err.message || 'An error occurred while deleting the event');
+        setErrorMessage(err instanceof Error ? err.message : 'An error occurred while deleting the event');
       }
     }
   };
