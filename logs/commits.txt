@@ -1,0 +1,13 @@
+======================================
+COMMIT LOGS: QR CHECKIN APPLICATION
+======================================
+
+# No commits have been made yet. 
+# This file will track commits when they are made.
+
+# Format:
+# [YYYY-MM-DD] - <commit hash>
+# Commit message: <message>
+# Description: <detailed description>
+#
+# -------------------------------------- 

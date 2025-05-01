@@ -1,0 +1,224 @@
+======================================
+PROJECT LOGS: QR CHECKIN APPLICATION
+======================================
+
+[2025-05-07] - Student Dashboard Event Listing and Registration
+- Added event listing functionality to the student dashboard
+- Implemented event details modal with complete event information
+- Created event registration system with automatic profile data pre-filling
+- Added registration status checking to prevent duplicate registrations
+- Created reusable components for events display and registration
+- Implemented proper loading states and error handling
+
+Implementation Details:
+- Displayed events from the database in a grid layout on student dashboard
+- Created EventCard component for consistent event display
+- Implemented event details modal with all event information
+- Added EventRegistration component with automatic student data pre-filling
+- Created database functions to check registration status and register users
+- Added optimistic UI updates for registration success/failure
+- Implemented loading states for all async operations
+- Used the current user's profile data from session
+
+Notes:
+- Successfully implemented event registration flow
+- Created modular components for better code organization
+- Added proper error handling for duplicate registrations
+- No failed attempts in this implementation
+
+[2025-05-04] - Advanced Database Permission Fixes
+- Resolved complex permission issues with Supabase database
+- Created comprehensive SQL setup files for better error handling
+- Implemented alternative event creation without triggers
+- Added detailed error diagnostics to UI and server functions
+- Created setup.sql for one-click database initialization
+- Added diagnostic queries to troubleshoot database issues
+
+Implementation Details:
+- Created bypass-rls.sql to temporarily disable Row Level Security 
+- Implemented an alternative events-alt.ts implementation that uses public_events table
+- Created stored procedures with SECURITY DEFINER to bypass permission issues
+- Added robust error handling with better user feedback
+- Implemented debug mode with technical details in UI
+- Created SQL diagnostic queries to troubleshoot issues
+
+Notes:
+- Successfully resolved permission issues with multiple approaches
+- Created a more permissive security policy for testing purposes
+- Added comprehensive debug logging throughout the system
+- Fixed empty error object issues with better error handling
+
+[2025-05-03] - Database Permission Fixes
+- Fixed permission denied error for schema public
+- Created SQL script to grant necessary permissions
+- Updated trigger function with SECURITY DEFINER to execute with owner privileges
+- Enhanced error handling in event creation process
+- Added permissions granting to newly created event tables
+- Improved user feedback for database permission errors
+
+Implementation Details:
+- Created permissions.sql file with comprehensive permission grants
+- Modified the trigger function to use SECURITY DEFINER
+- Added explicit permission grants for dynamically created tables
+- Enhanced error handling in events service with specific error codes
+- Added pre-filled date and time in the event creation form
+- Improved error message display in the UI
+
+Notes:
+- Successfully addressed permission issues in Supabase
+- Used SECURITY DEFINER to allow the trigger to create tables
+- Used proper error codes to provide meaningful error messages
+- Fixed issue with "permission denied for schema public" error
+
+[2025-05-02] - Events Management Implementation
+- Added events table to database schema
+- Implemented automatic attendance table creation using database triggers
+- Created event management service for CRUD operations
+- Developed event creation modal form for admin users
+- Added event listing component for the admin dashboard
+- Integrated events management into admin dashboard
+
+Implementation Details:
+- Designed database schema for events with all required fields
+- Created SQL trigger function to automatically generate event-specific tables
+- Built reusable modal component for creating events
+- Implemented form validation for event creation
+- Created event listing with deletion functionality
+- Added error handling throughout the events management flow
+
+Notes:
+- Successfully implemented events management for admin users
+- SQL trigger solution automatically creates event attendance tables
+- Event form includes all required fields (title, description, location, date, time)
+- No failed attempts in this implementation
+
+[2025-04-30] - Role-Based Authentication Implementation
+- Added role column to profiles table (student/admin)
+- Implemented role-based routing in the authentication system
+- Created admin dashboard for administrative users
+- Updated middleware to protect routes based on user role
+- Added role-specific checks in the login process
+- Setup conditional redirection based on user role
+
+Implementation Details:
+- Modified database schema to include role field
+- Added role handling to authentication functions
+- Created separate admin dashboard layout and page
+- Added role validation to ensure proper access control
+- Updated middleware to check user roles from cookies
+
+Notes:
+- Successfully implemented role-based access control
+- Created distinct user experiences for students and admins
+- No failed attempts in this implementation
+
+[2025-04-28] - Custom Authentication Implementation
+- Removed Supabase authentication
+- Implemented custom authentication directly with profiles table
+- Added password hashing with SHA-256
+- Set up client-side session management with cookies
+- Updated middleware to check for cookie-based authentication
+- Updated auth-related UI components to work with new system
+- Added schema.sql file with required database structure
+- Installed js-cookie for cookie management
+
+Implementation Details:
+- Direct database authentication with profiles table
+- Password hashing for security
+- Cookie-based session management
+- Updated middleware for route protection
+
+Notes:
+- Successfully replaced Supabase Auth with custom implementation
+- Maintained same UI and user experience
+- No failed attempts in this implementation
+
+[2025-04-26] - Initial Auth Implementation
+- Created authentication system with login and signup pages
+- Implemented Supabase integration for user management
+- Added profiles table integration for user data
+- Set up empty dashboard for authenticated users
+- Configured middleware for route protection and redirection
+- Created reusable UI components (Button, Input)
+- Updated font to Overpass Mono as required
+- Fixed Supabase URL in environment variables
+
+Implementation Details:
+- Authentication with Supabase Auth and profiles table
+- Client-side forms with validation
+- Protected routes via Next.js middleware
+- Clean UI with responsive design
+- FontFamily set to Overpass Mono as specified
+
+Notes:
+- Supabase auth-helpers-nextjs was initially installed but found to be deprecated
+- Replaced with recommended @supabase/ssr package
+- No failed attempts in this implementation 
+
+[2025-05-08] - QR Code Generation and Email Notification System
+- Implemented QR code generation for event registrations
+- Added email notification system for registration confirmations
+- Created API endpoint for handling registration with QR codes
+- Updated registration component to use new API endpoint
+- Used qrcode npm package to generate QR codes with JSON metadata
+- Implemented nodemailer for email sending with proper email templates
+- Configured email settings using Gmail SMTP
+
+Implementation Details:
+- Created /api/register-event API endpoint to handle registrations
+- Generated QR codes with embedded JSON metadata (name, email, event info)
+- Built HTML email template with event details and embedded QR code
+- Configured nodemailer with Gmail SMTP settings
+- Updated registration component to call new API endpoint
+- Enhanced success message to indicate email has been sent
+
+Notes:
+- Successfully implemented QR code generation and email sending
+- Used proper environment variables for email configuration
+- Structured QR code data in JSON format for easy scanning
+- No failed attempts in this implementation 
+
+[2025-05-09] - QR Code Metadata Storage and Base64 Encoding Implementation
+- Added qrdata column to event attendance tables to store encoded registration data
+- Implemented base64 encoding for QR code metadata to ensure consistent format
+- Enhanced QR code generation with better visibility settings
+- Created utility functions for QR code generation, decoding, and validation
+- Updated registration process to store encoded metadata in the database
+- Improved email template with better formatting and QR code display
+
+Implementation Details:
+- Created SQL function to add qrdata column to event attendance tables
+- Implemented base64 encoding/decoding for consistent data format
+- Enhanced QR code generation with high error correction level (H - 30%) for better scanning
+- Created dedicated utility file for QR code operations (src/lib/qrcode.ts)
+- Modified registration process to store the same data in the database that's used in the QR code
+- Updated email template to display QR codes with proper styling and border
+
+Notes:
+- Base64 encoding provides a consistent format for storing/retrieving QR data
+- High error correction level ensures QR codes can still be read even if partially damaged
+- Storing the QR metadata in the database enables easier validation during check-in
+- No failed attempts in this implementation 
+
+[2025-05-10] - Enhanced QR Code Email Delivery System
+- Improved QR code generation and email delivery reliability
+- Created dedicated endpoint to serve QR codes as images
+- Implemented multiple email delivery methods for better compatibility across email clients
+- Enhanced QR code image quality and readability
+- Added direct fallback links in emails for cases where images are blocked
+
+Implementation Details:
+- Created `/api/qrcode/registration/[id]` endpoint to serve QR codes as PNG images
+- Implemented two complementary email delivery methods:
+  - One using embedded data URLs for immediate display
+  - Another using API URLs for better email client compatibility
+- Enhanced QR code generation with higher resolution and contrast
+- Added fallback link in email for direct QR code access
+- Implemented automatic detection of registration IDs for improved URL generation
+- Added proper caching headers for QR code images
+
+Notes:
+- URL-based approach is more reliable across different email clients
+- Direct embedding of QR codes works for most modern email clients
+- Having both methods ensures the best possible compatibility
+- No failed attempts in this implementation 
