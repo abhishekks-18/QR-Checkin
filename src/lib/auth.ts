@@ -60,7 +60,7 @@ export async function signIn(email: string, password: string) {
       data: { user: data }, 
       error: null 
     };
-  } catch (_err) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  } catch (_err) {
     return { 
       data: { user: null }, 
       error: { message: 'An error occurred during sign in' } 
@@ -117,7 +117,7 @@ export async function signUp(email: string, password: string, fullName: string, 
       data: { user: data[0] }, 
       error: null 
     };
-  } catch (_) {
+  } catch (_error) {
     return { 
       data: null, 
       error: { message: 'An error occurred during registration' } 
@@ -150,7 +150,7 @@ export async function getCurrentUser() {
     
     const user = JSON.parse(userJson);
     return { data: { user }, error: null };
-  } catch (_err) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  } catch (_err) {
     return { data: { user: null }, error: null };
   }
 }

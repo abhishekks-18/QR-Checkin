@@ -122,7 +122,7 @@ export async function GET(request: NextRequest) {
         success: true,
         data: decodedData
       });
-    } catch (_) {
+    } catch (_error) {
       return NextResponse.json(
         { success: false, error: 'Invalid encoded data format' },
         { status: 400 }
