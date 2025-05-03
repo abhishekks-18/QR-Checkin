@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Overpass_Mono } from "next/font/google";
+import { Xanh_Mono } from "next/font/google";
 import "./globals.css";
 
 /**
- * Load Overpass Mono font as per requirements
+ * Load Xanh Mono font as the ONLY font for the project
  */
-const overpassMono = Overpass_Mono({
+const xanhMono = Xanh_Mono({
   subsets: ["latin"],
-  variable: "--font-overpass-mono",
+  weight: "400",
+  variable: "--font-xanh-mono",
   display: "swap",
 });
 
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${overpassMono.variable} font-mono antialiased`}
+        className={`${xanhMono.variable} font-mono antialiased`}
       >
         {children}
       </body>

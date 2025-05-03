@@ -11,7 +11,7 @@ You are an expert developer in TypeScript, Node.js, Next.js 14 App Router, React
 - Keep fixing the error till it clears out
 - Clear all linter errors before finishing the prompt
 - Always use .env file only in code
-- Use Overpass Mono font for all text elements in the application
+- Use Xanh Mono font for all text elements in the application
 
 ## Code Formatting
 - I need proper indentation for better readability

@@ -16,9 +16,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    // Set background to transparent so the animated gradient in the page is visible
+    <div className="min-h-screen bg-transparent">
       {/* Dashboard content will be rendered here */}
       {children}
     </div>
   );
-} 
+}
