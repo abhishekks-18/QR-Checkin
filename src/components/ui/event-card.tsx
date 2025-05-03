@@ -30,24 +30,24 @@ const formatEventDate = (dateStr: string, timeStr: string) => {
  */
 export function EventCard({ event, onClick }: EventCardProps) {
   return (
-    <div 
+    <div
       className="border border-gray-200 rounded-lg p-4 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer"
       onClick={() => onClick(event)}
     >
       {/* Event Title */}
-      <h4 className="text-lg font-semibold mb-2">{event.title}</h4>
-      
+      <h4 className="text-2xl font-bold mb-2 tracking-wider">{event.title}</h4>
+
       {/* Event Location */}
-      <p className="text-sm text-gray-600 mb-2">
+      <p className="text-sm text-gray-600 mb-2 tracking-wider">
         <span className="inline-block mr-2">📍</span>
         {event.location}
       </p>
-      
+
       {/* Event Date and Time */}
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-600 tracking-wider">
         <span className="inline-block mr-2">🗓️</span>
         {formatEventDate(event.event_date, event.event_time)}
       </p>
     </div>
   );
-} 
+}

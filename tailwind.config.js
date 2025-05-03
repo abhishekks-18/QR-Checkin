@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['var(--font-overpass-mono)', 'monospace'],
+        mono: ['var(--font-xanh-mono)'],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -53,4 +53,4 @@ module.exports = {
     },
   },
   plugins: [],
-} 
+}
