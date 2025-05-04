@@ -139,15 +139,15 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
   };
   
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 font-mono">
       {/* Error message */}
       {error && (
-        <div className="rounded-md bg-red-50 p-4 mb-4">
-          <div className="text-sm text-red-700 whitespace-pre-line">{error}</div>
+        <div className="rounded-md bg-red-900/40 border border-red-700 p-4 mb-4">
+          <div className="text-sm text-red-300 whitespace-pre-line">{error}</div>
           {debugInfo && (
             <details className="mt-2">
-              <summary className="text-xs text-red-600 cursor-pointer">Technical Details</summary>
-              <pre className="mt-2 text-xs bg-red-100 p-2 rounded overflow-auto">{debugInfo}</pre>
+              <summary className="text-xs text-red-400 cursor-pointer">Technical Details</summary>
+              <pre className="mt-2 text-xs bg-red-950/50 p-2 rounded overflow-auto text-red-300">{debugInfo}</pre>
             </details>
           )}
         </div>
@@ -155,8 +155,8 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
       
       {/* Event title */}
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-          Title <span className="text-red-500">*</span>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
+          Title <span className="text-red-400">*</span>
         </label>
         <Input
           id="title"
@@ -166,19 +166,20 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
           value={formData.title}
           onChange={handleChange}
           placeholder="Enter event title"
+          className="bg-gray-800/50 border-gray-700 text-gray-200 placeholder:text-gray-500 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
       
       {/* Event description */}
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">
           Description
         </label>
         <textarea
           id="description"
           name="description"
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-md shadow-sm text-gray-200 placeholder:text-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 font-mono"
           value={formData.description}
           onChange={handleChange}
           placeholder="Enter event description"
@@ -187,8 +188,8 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
       
       {/* Event location */}
       <div>
-        <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-          Location <span className="text-red-500">*</span>
+        <label htmlFor="location" className="block text-sm font-medium text-gray-300 mb-1">
+          Location <span className="text-red-400">*</span>
         </label>
         <Input
           id="location"
@@ -198,14 +199,15 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
           value={formData.location}
           onChange={handleChange}
           placeholder="Enter event location"
+          className="bg-gray-800/50 border-gray-700 text-gray-200 placeholder:text-gray-500 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
       
       {/* Event date and time */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="event_date" className="block text-sm font-medium text-gray-700 mb-1">
-            Date <span className="text-red-500">*</span>
+          <label htmlFor="event_date" className="block text-sm font-medium text-gray-300 mb-1">
+            Date <span className="text-red-400">*</span>
           </label>
           <Input
             id="event_date"
@@ -214,11 +216,12 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
             required
             value={formData.event_date}
             onChange={handleChange}
+            className="bg-gray-800/50 border-gray-700 text-gray-200 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
         <div>
-          <label htmlFor="event_time" className="block text-sm font-medium text-gray-700 mb-1">
-            Time <span className="text-red-500">*</span>
+          <label htmlFor="event_time" className="block text-sm font-medium text-gray-300 mb-1">
+            Time <span className="text-red-400">*</span>
           </label>
           <Input
             id="event_time"
@@ -227,6 +230,7 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
             required
             value={formData.event_time}
             onChange={handleChange}
+            className="bg-gray-800/50 border-gray-700 text-gray-200 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
       </div>
@@ -235,15 +239,17 @@ export function CreateEventForm({ userId, onSuccess, onCancel }: CreateEventForm
       <div className="flex justify-end space-x-3 pt-4">
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           onClick={onCancel}
           disabled={isLoading}
+          className="border border-gray-700 bg-gray-800/50 text-gray-300 hover:bg-gray-700/60 hover:text-white"
         >
           Cancel
         </Button>
         <Button
           type="submit"
           isLoading={isLoading}
+          className="bg-blue-800/80 text-blue-100 hover:bg-blue-700/80 hover:text-white border border-blue-600 shadow-md"
         >
           Create Event
         </Button>

@@ -97,31 +97,31 @@ export function EventRegistration({ event, profile }: EventRegistrationProps) {
   };
 
   return (
-    <div className="mt-6 pt-4 border-t border-gray-200">
+    <div className="mt-6 pt-4 border-t border-gray-700">
       {checkingRegistration ? (
         <div className="flex justify-center py-4">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-400"></div>
         </div>
       ) : registrationSuccess ? (
-        <div className="bg-green-50 p-4 rounded-md text-green-700">
+        <div className="bg-green-900/40 border border-green-700 p-4 rounded-md text-green-300">
           <p className="font-medium">Registration Successful!</p>
           <p className="text-sm mt-1">You are registered for this event. A confirmation email with a QR code has been sent to your email address.</p>
         </div>
       ) : (
         <>
           {registrationError && (
-            <div className="bg-red-50 p-4 rounded-md text-red-700 mb-4">
+            <div className="bg-red-900/40 border border-red-700 p-4 rounded-md text-red-300 mb-4">
               <p>{registrationError}</p>
             </div>
           )}
           <Button 
             onClick={handleRegister} 
             isLoading={isRegistering}
-            className="w-full"
+            className="w-full bg-blue-800/80 text-blue-100 hover:bg-blue-700/80 hover:text-white border border-blue-600 shadow-md"
           >
             Register for this Event
           </Button>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-400 mt-2">
             By registering, you will receive a confirmation email with a QR code for check-in.
           </p>
         </>

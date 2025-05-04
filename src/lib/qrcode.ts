@@ -169,4 +169,22 @@ export async function generateFallbackQRCode(qrData: string): Promise<string> {
     // Return a placeholder image if all else fails
     return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
   }
+}
+
+/**
+ * Generate a production-ready QR code registration URL
+ * @param registrationId The ID of the registration
+ * @returns A fully qualified URL for the QR code in production
+ */
+export function getProductionQRCodeUrl(registrationId: string): string {
+  // Use the environment variable for the base URL, with a fallback
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+  
+  // Ensure baseUrl doesn't end with a slash
+  const normalizedBaseUrl = baseUrl.endsWith('/') 
+    ? baseUrl.slice(0, -1) 
+    : baseUrl;
+    
+  // Create QR code URL that points to our API
+  return `${normalizedBaseUrl}/api/qrcode/registration/${registrationId}`;
 } 

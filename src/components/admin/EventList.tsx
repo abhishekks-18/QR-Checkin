@@ -6,6 +6,7 @@
 import React from 'react';
 import { Event } from '@/lib/events';
 import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 
 /**
  * Props for the EventList component
@@ -52,35 +53,35 @@ function formatTime(timeStr: string): string {
 export function EventList({ events, onEdit, onDelete }: EventListProps) {
   if (events.length === 0) {
     return (
-      <div className="text-center py-8">
-        <p className="text-gray-500">No events found. Create your first event.</p>
+      <div className="text-center py-8 font-mono">
+        <p className="text-gray-400">No events found. Create your first event.</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-mono">
       {events.map((event) => (
         <div 
           key={event.id} 
-          className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow"
+          className="bg-black/40 border border-gray-800 rounded-lg shadow-md p-6 hover:bg-black/50 transition-all"
         >
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">{event.title}</h3>
+              <h3 className="text-xl font-semibold text-gray-200 tracking-wide">{event.title}</h3>
               <div className="mt-2 space-y-1">
-                <p className="text-sm text-gray-500">
-                  <span className="font-medium">Date:</span> {formatDate(event.event_date)}
+                <p className="text-sm text-gray-300">
+                  <span className="font-medium text-blue-300">Date:</span> {formatDate(event.event_date)}
                 </p>
-                <p className="text-sm text-gray-500">
-                  <span className="font-medium">Time:</span> {formatTime(event.event_time)}
+                <p className="text-sm text-gray-300">
+                  <span className="font-medium text-blue-300">Time:</span> {formatTime(event.event_time)}
                 </p>
-                <p className="text-sm text-gray-500">
-                  <span className="font-medium">Location:</span> {event.location}
+                <p className="text-sm text-gray-300">
+                  <span className="font-medium text-blue-300">Location:</span> {event.location}
                 </p>
               </div>
               {event.description && (
-                <p className="mt-3 text-gray-600">{event.description}</p>
+                <p className="mt-3 text-gray-400">{event.description}</p>
               )}
             </div>
             
@@ -98,10 +99,12 @@ export function EventList({ events, onEdit, onDelete }: EventListProps) {
                 )}
                 {onDelete && (
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
+                    className="bg-red-900/50 hover:bg-red-800/60 text-red-200 border border-red-700 shadow-sm font-mono"
                     onClick={() => onDelete(event)}
                   >
+                    <Trash2 className="w-4 h-4 mr-1" />
                     Delete
                   </Button>
                 )}

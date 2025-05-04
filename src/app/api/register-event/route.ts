@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { registerForEvent, getEventById } from '@/lib/events';
 import { sendQRCodeEmail, sendQRCodeEmailWithUrl } from '@/lib/email';
 import { RegistrationData, RegistrationResponse } from '@/lib/types';
-import { generateEventQRCode } from '@/lib/qrcode';
+import { generateEventQRCode, getProductionQRCodeUrl } from '@/lib/qrcode';
 import { supabase } from '@/lib/supabase';
 
 /**
@@ -98,6 +98,9 @@ export async function POST(request: NextRequest) {
       }
     };
     
+    // Generate the production QR code URL
+    const productionQrUrl = registrationId ? getProductionQRCodeUrl(registrationId) : '';
+    
     // Try to send email with URL-based QR code first (more reliable)
     // Fall back to data URL-based QR code if registration ID is not available
     let emailResult;
@@ -111,6 +114,7 @@ export async function POST(request: NextRequest) {
         emailParams.eventDetails,
         emailParams.userData,
         registrationId,
+        qrResult.encodedMetadata,
         baseUrl
       );
     } else {
@@ -133,10 +137,12 @@ export async function POST(request: NextRequest) {
       } as RegistrationResponse);
     }
 
-    // Return success response
-    return NextResponse.json({ 
+    // Return success response with registration data
+    return NextResponse.json({
       success: true,
-      message: 'Registration successful. Check your email for confirmation.'
+      message: 'Registration successful!',
+      qrCodeUrl: productionQrUrl, // Include the production URL in the response
+      registrationId
     } as RegistrationResponse);
   } catch (error: unknown) {
     console.error('Error in registration API:', error);

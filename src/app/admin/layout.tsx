@@ -3,6 +3,8 @@
  * Provides consistent layout structure for all admin pages
  */
 
+import React from 'react';
+
 /**
  * Admin layout component
  * @param props Layout props including children components
@@ -14,9 +16,10 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Main content area */}
-      <main className="flex-grow">{children}</main>
+    // Set background to transparent so the animated gradient in the page is visible
+    <div className="min-h-screen bg-transparent">
+      {/* Admin content will be rendered here */}
+      {children}
     </div>
   );
 } 

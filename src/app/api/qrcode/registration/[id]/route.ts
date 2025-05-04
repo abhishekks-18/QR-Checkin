@@ -8,6 +8,25 @@ import { supabase } from '@/lib/supabase';
 import QRCode from 'qrcode';
 
 /**
+ * Set the appropriate CORS headers for the QR code response
+ * @param response The response object to add headers to
+ * @returns The modified response
+ */
+function setCorsHeaders(response: NextResponse): NextResponse {
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+  return response;
+}
+
+/**
+ * Handle OPTIONS requests for CORS preflight
+ */
+export function OPTIONS() {
+  return setCorsHeaders(new NextResponse(null, { status: 204 }));
+}
+
+/**
  * Handle GET requests to retrieve registration QR codes
  * @param request The request object
  * @param params Route parameters, containing the registration ID
@@ -18,12 +37,11 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Await params is not needed in Next.js App Router, but we need to use it correctly
-    const { id } = params;
-    const registrationId = id;
+    // Properly extract the ID parameter
+    const registrationId = params.id;
     
     if (!registrationId) {
-      return new NextResponse('Missing registration ID', { status: 400 });
+      return setCorsHeaders(new NextResponse('Missing registration ID', { status: 400 }));
     }
     
     // Need to query all event tables to find this registration
@@ -34,7 +52,7 @@ export async function GET(
       
     if (eventsError || !events?.length) {
       console.error('Error retrieving events:', eventsError);
-      return new NextResponse('Error retrieving events', { status: 500 });
+      return setCorsHeaders(new NextResponse('Error retrieving events', { status: 500 }));
     }
     
     // Try to find the registration in each event table
@@ -64,7 +82,7 @@ export async function GET(
     }
     
     if (!qrData) {
-      return new NextResponse('Registration not found', { status: 404 });
+      return setCorsHeaders(new NextResponse('Registration not found', { status: 404 }));
     }
     
     // Generate QR code as PNG
@@ -80,15 +98,16 @@ export async function GET(
     });
     
     // Return the QR code image with proper headers
-    return new NextResponse(qrBuffer, {
+    return setCorsHeaders(new NextResponse(qrBuffer, {
       headers: {
         'Content-Type': 'image/png',
         'Cache-Control': 'public, max-age=86400', // Cache for 1 day
       }
-    });
-  } catch (_error) {
-    return NextResponse.json({
+    }));
+  } catch (error) {
+    console.error('Error generating QR code:', error);
+    return setCorsHeaders(NextResponse.json({
       error: 'Error scanning registration',
-    }, { status: 500 });
+    }, { status: 500 }));
   }
 } 

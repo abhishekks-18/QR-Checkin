@@ -35,16 +35,16 @@ export function EventCard({ event, onClick }: EventCardProps) {
       onClick={() => onClick(event)}
     >
       {/* Event Title */}
-      <h4 className="text-2xl font-bold mb-2 tracking-wider">{event.title}</h4>
+      <h4 className="text-2xl font-bold mb-2 tracking-wider text-gray-100">{event.title}</h4>
 
       {/* Event Location */}
-      <p className="text-sm text-gray-600 mb-2 tracking-wider">
+      <p className="text-sm text-gray-100 mb-2 tracking-wider">
         <span className="inline-block mr-2">📍</span>
         {event.location}
       </p>
 
       {/* Event Date and Time */}
-      <p className="text-sm text-gray-600 tracking-wider">
+      <p className="text-sm text-gray-100 tracking-wider">
         <span className="inline-block mr-2">🗓️</span>
         {formatEventDate(event.event_date, event.event_time)}
       </p>

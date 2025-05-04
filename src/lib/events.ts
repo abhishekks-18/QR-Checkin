@@ -192,12 +192,41 @@ export async function updateEvent(eventId: string, eventData: Partial<EventParam
  */
 export async function deleteEvent(eventId: string) {
   try {
+    // First, get the event details to construct the attendance table name
+    const { data: eventData, error: eventError } = await supabase
+      .from('events')
+      .select('title')
+      .eq('id', eventId)
+      .single();
+    
+    if (eventError) {
+      console.error('Error getting event details for deletion:', eventError);
+      return { success: false, error: { message: 'Failed to get event details for deletion' } };
+    }
+    
+    // Construct the attendance table name
+    const sanitizedTitle = eventData.title.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const tableName = `event_${sanitizedTitle}_${eventId}`;
+    
+    // Delete all registration records from the attendance table
+    const { error: deleteAttendanceError } = await supabase
+      .from(tableName)
+      .delete()
+      .not('id', 'is', null); // This will delete all records in the table
+    
+    if (deleteAttendanceError) {
+      console.error('Error deleting event attendance records:', deleteAttendanceError);
+      return { success: false, error: { message: 'Failed to delete event attendance records' } };
+    }
+    
+    // Now delete the actual event
     const { error } = await supabase
       .from('events')
       .delete()
       .eq('id', eventId);
 
     if (error) {
+      console.error('Error deleting event:', error);
       return { success: false, error };
     }
 
@@ -241,6 +270,36 @@ export async function registerForEvent(
       
       // Encode metadata to base64
       encodedMetadata = Buffer.from(JSON.stringify(metadata)).toString('base64');
+    }
+
+    // First check if the table exists by trying to query it
+    const { error: tableCheckError } = await supabase
+      .from(tableName)
+      .select('id')
+      .limit(1);
+    
+    // If the table doesn't exist (error code 42P01), we need to create it
+    if (tableCheckError && tableCheckError.code === '42P01') {
+      console.log(`Attendance table ${tableName} doesn't exist. Creating it now.`);
+      
+      // Use SQL to create the table
+      const { error: createTableError } = await supabase.rpc('create_event_attendance_table', {
+        table_name: tableName,
+        event_id_param: eventId
+      });
+      
+      if (createTableError) {
+        console.error('Error creating attendance table:', createTableError);
+        return {
+          success: false,
+          error: { message: 'Could not create attendance tracking table. Please contact an administrator.' }
+        };
+      }
+      
+      console.log(`Successfully created attendance table: ${tableName}`);
+    } else if (tableCheckError) {
+      // If there's some other error with the table check
+      console.error('Error checking if attendance table exists:', tableCheckError);
     }
     
     // Insert registration data with encoded metadata
@@ -313,6 +372,12 @@ export async function isUserRegistered(
       
     if (error) {
       console.error('Error checking registration status:', error);
+      
+      // If the table doesn't exist, the user isn't registered
+      if (error.code === '42P01') {
+        return { isRegistered: false, error: null };
+      }
+      
       return { 
         isRegistered: false, 
         error: { message: error.message || 'Failed to check registration status.' } 

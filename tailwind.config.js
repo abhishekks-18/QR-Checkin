@@ -9,6 +9,8 @@ module.exports = {
     extend: {
       fontFamily: {
         mono: ['var(--font-xanh-mono)'],
+        sans: ['var(--font-xanh-mono)'],
+        serif: ['var(--font-xanh-mono)'],
       },
       colors: {
         border: 'hsl(var(--border))',

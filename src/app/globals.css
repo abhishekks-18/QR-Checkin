@@ -8,6 +8,7 @@
   --color-foreground: var(--foreground);
   --font-sans: 'Xanh Mono';
   --font-mono: var(--font-xanh-mono);
+  --font-serif: 'Xanh Mono';
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

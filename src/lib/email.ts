@@ -95,7 +95,7 @@ export function generateEmailTemplate(content: string): string {
       <title>Email Notification</title>
       <style>
         body {
-          font-family: 'Overpass Mono', monospace;
+          font-family: 'Xanh Mono', monospace;
           margin: 0;
           padding: 0;
           color: #333333;
@@ -243,8 +243,11 @@ export async function sendQRCodeEmailWithUrl(
   baseUrl: string = process.env.NEXT_PUBLIC_APP_URL || ''
 ): Promise<EmailResponse> {
   try {
-    // Create QR code URL that points to our API
-    const qrCodeUrl = `${baseUrl}/api/qrcode/registration/${registrationId}`;
+    // Ensure baseUrl doesn't end with a slash
+    const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    
+    // Create QR code URL that points to our API - use direct path without http://api prefix
+    const qrCodeUrl = `${normalizedBaseUrl}/api/qrcode/registration/${registrationId}`;
     
     // Also generate a data URL as a fallback (if base64 data is provided)
     let fallbackDataUrl = '';
@@ -312,8 +315,10 @@ export async function sendQRCodeEmailWithUrl(
       
       <p style="font-size: 12px; color: #666;">This QR code contains your registration information and will be used for check-in.</p>
       
-      <p style="font-size: 12px; color: #666;">If the QR code is not displaying correctly, please <a href="${qrCodeUrl}" target="_blank">click here</a> to view it.</p>
+      <p style="font-size: 12px; color: #666;">If the QR code is not displaying correctly, please <a href="${qrCodeUrl}" target="_blank">click here to view it directly</a>.</p>
     `;
+
+    console.log(`Generated QR code URL for email: ${qrCodeUrl}`);
 
     // Send the email
     return await sendEmail({

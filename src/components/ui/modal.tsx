@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 // Import Framer Motion for smooth transitions
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { X } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -89,26 +90,32 @@ export function Modal({ isOpen, onClose, title, children, maxWidth = 'md' }: Mod
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
-            className={`bg-white rounded-lg shadow-xl ${maxWidthClasses[maxWidth as keyof typeof maxWidthClasses]} w-full`}
+            className={`bg-black/60 backdrop-blur-md border border-gray-700 rounded-lg shadow-xl ${maxWidthClasses[maxWidth as keyof typeof maxWidthClasses]} w-full font-mono`}
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"
           >
             {/* Modal header */}
-            <div className="px-6 py-4 border-b border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-700">
               {/* Modal title with increased letter spacing for better readability */}
-              <h3 id="modal-title" className="text-3xl font-bold text-gray-900 tracking-wider">{title}</h3>
+              <h3 id="modal-title" className="text-3xl font-bold text-gray-100 tracking-wider">{title}</h3>
             </div>
 
             {/* Modal content */}
-            <div className="px-6 py-4">
+            <div className="px-6 py-4 text-gray-100">
               {children}
             </div>
 
             {/* Modal footer */}
-            <div className="px-6 py-3 bg-gray-50 flex justify-end rounded-b-lg">
-              {/* Use Shadcn UI Button for modal close */}
-              <Button variant="outline" onClick={onClose} type="button">
+            <div className="px-6 py-3 flex justify-end rounded-b-lg bg-black/30 border-t border-gray-700">
+              {/* Use Shadcn UI Button for modal close with red styling */}
+              <Button 
+                variant="ghost" 
+                onClick={onClose} 
+                type="button"
+                className="bg-red-900/50 hover:bg-red-800/60 text-red-200 border border-red-700 shadow-sm"
+              >
+                <X className="w-4 h-4 mr-1" />
                 Close
               </Button>
             </div>

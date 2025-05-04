@@ -222,3 +222,137 @@ Notes:
 - Direct embedding of QR codes works for most modern email clients
 - Having both methods ensures the best possible compatibility
 - No failed attempts in this implementation 
+
+[2025-05-10] - Admin Dashboard UI/UX Update
+- Updated admin dashboard to match the student dashboard UI/UX
+- Implemented animated gradient background for admin dashboard
+- Applied consistent dark theme styling across all admin components
+- Updated font to Xanh Mono for all text elements
+- Enhanced EventList component with dark theme styling
+- Updated CreateEventForm component to match dark theme
+
+Implementation Details:
+- Added animated gradient background with mouse interaction
+- Updated admin/layout.tsx to use transparent background for gradient support
+- Modified admin/dashboard/page.tsx with consistent styling from student dashboard
+- Updated EventList component with dark theme colors and styles
+- Enhanced CreateEventForm with dark theme styling for inputs and buttons
+- Used consistent font (Xanh Mono) across all components
+
+Notes:
+- Successfully implemented consistent UI/UX across student and admin dashboards
+- Maintained all functionality while improving visual design
+- No failed attempts in this implementation 
+
+[2025-05-12] - EventCard Text Color Improvement
+- Updated text colors in the EventCard component for better visibility
+- Changed event title, location, and date/time text to white for better contrast against dark backgrounds
+- Improved readability of event information in the student dashboard
+
+Implementation Details:
+- Modified the EventCard component to use text-gray-100 (white) instead of the previous dark text colors
+- Updated all text elements (title, location, date/time) for consistent styling
+- Maintained existing icons and layout while improving contrast
+
+Notes:
+- Successfully improved visibility of event details in the student dashboard
+- Fixed the issue of dark text on dark background that made event details difficult to read
+- No failed attempts in this implementation 
+
+[2025-05-13] - Modal UI/UX Improvements
+- Updated modal components with consistent dark theme styling for both student and admin dashboards
+- Implemented dark background in modals to match the event management block styling
+- Added red styling to Close button in modals for better visibility and user experience
+- Enhanced success and error messages with dark theme styling
+
+Implementation Details:
+- Modified the Modal component to use black background with semi-transparent styling
+- Updated the modal Close button to use red styling with border and shadow
+- Kept the Cancel button in forms with standard dark theme styling
+- Enhanced the EventRegistration component with dark theme colors for better readability
+- Updated success and error messages with appropriate dark theme colors (red and green)
+- Maintained consistent font styling across all modals
+
+Notes:
+- Successfully implemented consistent modal styling across the application
+- Improved visibility of UI elements in modal forms
+- Enhanced user experience with better color contrast
+- No failed attempts in this implementation 
+
+[2025-05-14] - Event Deletion Foreign Key Constraint Fix
+- Fixed foreign key constraint violation when deleting events with attendees
+- Implemented two-step deletion process for events with registrations
+- Enhanced error handling for event deletion operations
+- Added detailed logging for debugging deletion issues
+
+Implementation Details:
+- Modified deleteEvent function to first retrieve event details
+- Implemented proper attendance table name construction using event details
+- Added deletion of all attendance records before deleting the main event
+- Enhanced error handling with specific error messages for each step
+- Implemented proper transaction-like behavior to prevent orphaned records
+
+Notes:
+- Successfully resolved the foreign key constraint violation
+- Improved deletion process with proper cascading delete behavior
+- Fixed the error: "update or delete on table 'events' violates foreign key constraint"
+- No failed attempts in this implementation 
+
+[2025-05-15] - Event Registration Fix for New Events
+- Fixed issue with registering for newly created events
+- Implemented automatic attendance table creation during registration
+- Enhanced error handling for registration process
+- Created SQL function for on-demand table creation
+
+Implementation Details:
+- Updated registerForEvent function to check if the attendance table exists
+- Added automatic table creation if the table doesn't exist during registration
+- Created SQL stored procedure (create_event_attendance_table) for table creation
+- Enhanced isUserRegistered function to handle non-existent tables gracefully
+- Added proper logging for table creation process
+- Implemented proper foreign key constraints with CASCADE delete
+
+Notes:
+- Successfully fixed the "Failed to register for event" error for new events
+- Improved resilience of the registration system
+- Added proper foreign key constraints to ensure database integrity
+- No failed attempts in this implementation 
+
+[2025-05-16] - QR Code URL Fix for Event Registration
+- Fixed QR code URL generation in email confirmations
+- Resolved redirect error when clicking on QR codes in emails
+- Improved URL handling for QR code generation and display
+- Enhanced error logging for QR code generation
+
+Implementation Details:
+- Fixed the sendQRCodeEmailWithUrl function to properly handle baseUrl normalization
+- Added missing qrdataBase64 parameter in the API registration route
+- Improved URL construction to avoid invalid API prefixes
+- Enhanced direct link text for better usability
+- Added detailed logging for QR code URL generation
+- Fixed parameter order in function calls
+
+Notes:
+- Successfully resolved the issue with QR code redirection errors
+- Improved the reliability of QR code delivery in emails
+- Enhanced the user experience when viewing QR codes 
+- No failed attempts in this implementation 
+
+[2025-05-17] - QR Code API Route Fix
+- Fixed params handling in QR code API endpoint
+- Resolved "params should be awaited" error in the Next.js App Router
+- Improved error handling in the QR code generation route
+- Enhanced logging for QR code API errors
+
+Implementation Details:
+- Fixed the params extraction in the QR code registration API route
+- Removed destructuring of params that was causing the error
+- Added proper error logging for QR code generation failures
+- Simplified params handling to follow Next.js App Router best practices
+- Improved error handling to provide more detailed error messages
+
+Notes:
+- Successfully resolved the error: "Route '/api/qrcode/registration/[id]' used `params.id`. `params` should be awaited before using its properties"
+- Fixed the issue that was preventing QR codes from being displayed properly
+- Improved the reliability of QR code viewing in emails
+- No failed attempts in this implementation
